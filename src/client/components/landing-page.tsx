@@ -1,19 +1,25 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import * as ReSub from 'resub'
-import {withStyles, Theme, StyleRules, StyleRulesCallback} from 'material-ui/styles'
-import {blue, lightGreen, grey} from 'material-ui/colors'
-import Grid from 'material-ui/Grid'
-import Typography from 'material-ui/Typography'
-import Divider from 'material-ui/Divider'
-import Button from 'material-ui/Button'
+import {withStyles, Theme, StyledComponentProps, StyleRules, StyleRulesCallback} from '@material-ui/core/styles'
+import {grey} from '@material-ui/core/colors'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import Divider from '@material-ui/core/Divider'
+import Button from '@material-ui/core/Button'
 
 import * as AiChan from '../../asset/img/ai-chan.png'
+import * as HonkaiImpact from '../../asset/img/honkai-impact.png'
+import * as Discord from '../../asset/img/discord.png'
 import screenStore from '../store/screen'
 import DemoSection from './demo-section'
 import CommandSection from './command-section'
 
 const styles = (theme:Theme):StyleRules<string> | StyleRulesCallback<string> => ({
+  '@import': [
+    'url(https://fonts.googleapis.com/css?family=Righteous)',
+    'url(https://fonts.googleapis.com/css?family=Roboto+Mono)'
+  ] as any,
   container: {
     width: '100vw',
     minHeight: '100vh',
@@ -46,6 +52,27 @@ const styles = (theme:Theme):StyleRules<string> | StyleRulesCallback<string> => 
     textAlign: 'right',
     [`@media (max-width:${theme.breakpoints.values.sm}px)`]: {
       textAlign: 'center'
+    }
+  },
+  headerTextFont: {
+    fontFamily: 'Righteous'
+  },
+  honkaiImpactImage: {
+    display: 'inline-block',
+    height: '80px',
+    margin: '-34px 0',
+    [`@media (max-width:${theme.breakpoints.values.md}px)`]: {
+      height: '50px',
+      margin: '-21px 0',
+    }
+  },
+  discordImage: {
+    display: 'inline-block',
+    height: '42px',
+    margin: '-17px 0',
+    [`@media (max-width:${theme.breakpoints.values.md}px)`]: {
+      height: '26px',
+      margin: '-9px 0',
     }
   },
   aiChanWelcome: {
@@ -99,11 +126,12 @@ class LandingPage extends ReSub.ComponentBase<LandingPageProps, LandingPageState
       <div className={classes.container}>
         <div className={classes.headerContainer}>
           <div className={classes.headerText}>
-            <Typography variant={['sm-tablet', 'xs-phone'].includes(screenType)? 'display3':'display4'} color='secondary'>
-              Ai-Chan Bot
+            <Typography classes={{root:classes.headerTextFont}} variant={['sm-tablet', 'xs-phone'].includes(screenType)? 'display3':'display4'} color='secondary'>
+              Ai Chan
             </Typography>
-            <Typography variant={['sm-tablet', 'xs-phone'].includes(screenType)? 'title':'display1'} color='primary'>
-              comes to your discord
+            <Typography classes={{root:classes.headerTextFont}} variant={['sm-tablet', 'xs-phone'].includes(screenType)? 'subheading':'title'} color='primary'>
+              from <img className={classes.honkaiImpactImage} src={HonkaiImpact}/>
+              comes to <img className={classes.discordImage} src={Discord}/>
             </Typography>
           </div>
           <img src={AiChan} className={classes.aiChanWelcome}/>
@@ -134,7 +162,7 @@ class LandingPage extends ReSub.ComponentBase<LandingPageProps, LandingPageState
         <div className={classes.footer}>
           <Grid container justify='space-between' alignItems='center' classes={{container:classes.pageContainer} as any}>
             <Typography variant='caption' color='primary'>
-              Developed by: Ching Yaw Hao, Yudhaime 
+              Developed by: Ching Yaw Hao, Vince Celis, Yudhaime
             </Typography>
             <Typography variant='caption' color='primary'>
               <a className={classes.link} href='https://discord.gg/4y2RzFy'>Try It</a> | <a className={classes.link} href='https://www.patreon.com/user?u=10662508'>Support Us</a> 
@@ -145,9 +173,7 @@ class LandingPage extends ReSub.ComponentBase<LandingPageProps, LandingPageState
     )
   } 
 }
-interface LandingPageProps extends React.Props<{}> {
-  classes?: any
-}
+interface LandingPageProps extends React.Props<{}>, StyledComponentProps {}
 interface LandingPageState {
   screenType: 'xl-desktop' | 'lg-desktop' | 'md-desktop' | 'sm-tablet' | 'xs-phone'
 }

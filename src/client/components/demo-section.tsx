@@ -1,11 +1,10 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import {withStyles, Theme, StyleRules, StyleRulesCallback} from 'material-ui/styles'
-import {green, grey} from 'material-ui/colors'
-import Grid from 'material-ui/Grid'
-import Typography from 'material-ui/Typography'
-import Divider from 'material-ui/Divider'
-import Card, {CardContent} from 'material-ui/Card'
+import {withStyles, Theme, StyledComponentProps, StyleRules, StyleRulesCallback} from '@material-ui/core/styles'
+import {grey} from '@material-ui/core/colors'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import Divider from '@material-ui/core/Divider'
 
 import * as WeaponDemo from '../../asset/img/weapon-demo.png'
 import * as GachaDemo from '../../asset/img/gacha-demo.png'
@@ -33,7 +32,8 @@ const styles = (theme:Theme):StyleRules<string> | StyleRulesCallback<string> => 
     padding: '32px'
   },
   demoImage: {
-    maxWidth: '100%'
+    width: '75%',
+    maxWidth: '400px'
   }
 })
 @(withStyles as any)(styles)
@@ -62,7 +62,7 @@ class DemoSection extends React.Component<DemoSectionProps, DemoSectionState> {
           command: 'command: !valkyrie',
           description: [
             'Here is the secret about the gals!',
-            'But however hard you try you will be able to see her panties!'
+            'But however hard you try you will not be able to see their panties!'
           ],
           image: ValkyrieDemo
         }, {
@@ -97,9 +97,7 @@ class DemoSection extends React.Component<DemoSectionProps, DemoSectionState> {
     )
   } 
 }
-interface DemoSectionProps extends React.Props<{}> {
-  classes?: any
-}
+interface DemoSectionProps extends React.Props<{}>, StyledComponentProps {}
 interface DemoSectionState {}
 
 export default DemoSection

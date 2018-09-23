@@ -1,8 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import * as classnames from 'classnames'
-import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles'
-import {lightGreen, green, grey} from 'material-ui/colors'
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles'
+import {lightGreen, green, grey} from '@material-ui/core/colors'
 
 import Favicon from './components/favicon'
 import LandingPage from './components/landing-page'

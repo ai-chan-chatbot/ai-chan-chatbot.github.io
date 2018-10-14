@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {withStyles, Theme, StyledComponentProps, StyleRules, StyleRulesCallback} from '@material-ui/core/styles'
+import {withStyles, Theme, StyledComponentProps, StyleRules} from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
@@ -11,10 +11,9 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import IconButton from '@material-ui/core/IconButton'
 import {ExpandMore as ExpandMoreIcon, Search as SearchIcon} from '@material-ui/icons'
 
-import helps from '../constants/helps'
-import * as StringUtil from '../utility/string'
+import * as StringUtil from '../../../utility/string'
 
-const styles = (theme:Theme):StyleRules<string> | StyleRulesCallback<string> => ({
+const styles = (theme:Theme):StyleRules<string> => ({
   searchCardSection: {
     margin: '16px 0 24px'
   },
@@ -67,9 +66,6 @@ const styles = (theme:Theme):StyleRules<string> | StyleRulesCallback<string> => 
   },
   commandDetailParagraph: {
     wordBreak: 'break-word'
-  },
-  queryText: {
-    color: theme.palette.primary.light
   }
 })
 @(withStyles as any)(styles)
@@ -81,6 +77,12 @@ class CommandSection extends React.Component<CommandSectionProps, CommandSection
       query: undefined,
       seaching: false,
       active: undefined
+    }
+  }
+  componentDidMount() {
+    const {updateHeight} = this.props
+    if(updateHeight) {
+      setTimeout(updateHeight)
     }
   }
   expand = (key:string) => {
@@ -100,8 +102,17 @@ class CommandSection extends React.Component<CommandSectionProps, CommandSection
   onFocusInput = (focus:boolean) => {
     this.setState({seaching:focus})
   }
+  prefix = (command:string) => {
+    const {name} = this.props
+    const check = command.split(' ')[0]
+    if(check === 'send') {
+      return `@${name} `
+    } else {
+      return PREFIX
+    }
+  }
   render() {
-    const {classes} = this.props
+    const {classes, helps, color} = this.props
     const {query, seaching, active} = this.state
     const highlightQuery = (paragraph:string) => {
       const found = query && paragraph.includes(query.toUpperCase())? query.toUpperCase():query
@@ -110,7 +121,7 @@ class CommandSection extends React.Component<CommandSectionProps, CommandSection
           notQuery
         ]:[
           ...content,
-          <span key={index} className={classes.queryText}>{found}</span>,
+          <span key={index} style={{color}}>{found}</span>,
           notQuery
         ]
       , [])
@@ -134,7 +145,7 @@ class CommandSection extends React.Component<CommandSectionProps, CommandSection
             </CardContent>
           </Card>
         </div>
-        {helps(PREFIX).reduce((category, help) => 
+        {helps.reduce((category, help) => 
           !query || help.commands.some(command => command.includes(query)) || help.category.includes(query.toUpperCase())? [
             ...category.map(each =>
               each.category === help.category?
@@ -157,7 +168,9 @@ class CommandSection extends React.Component<CommandSectionProps, CommandSection
                 <ExpansionPanelSummary expandIcon={help.description !== '' && <ExpandMoreIcon/>}>
                   <div className={classes.commandTitleContainer}>
                     <div className={classes.commandTitle}>
-                      <Typography variant='subheading'>{highlightQuery(StringUtil.conjuctJoin(help.commands.map(command => PREFIX + command)))}</Typography>
+                      <Typography variant='subheading'>
+                        {highlightQuery(StringUtil.conjuctJoin(help.commands.map(command => this.prefix(command) + command)))}
+                      </Typography>
                     </div>
                     <div className={classes.commandTitle}>
                       <Typography variant='caption'>{highlightQuery(help.category)}</Typography>
@@ -172,7 +185,7 @@ class CommandSection extends React.Component<CommandSectionProps, CommandSection
                   {help.examples.length > 0 && <Typography className={classes.commandSubheading} variant='caption' component='h5'>Examples</Typography>}
                   {help.examples.map((example, index) =>
                     <Typography key={index} className={classes.commandExamplePre} component='pre' gutterBottom>
-                      {PREFIX + example}
+                      {this.prefix(example) + example}
                     </Typography>
                   )}
                   {help.notes.length > 0 && <Typography className={classes.commandSubheading} variant='caption' component='h5'>Notes</Typography>}
@@ -190,7 +203,18 @@ class CommandSection extends React.Component<CommandSectionProps, CommandSection
     )
   } 
 }
-interface CommandSectionProps extends React.Props<{}>, StyledComponentProps {}
+interface CommandSectionProps extends React.Props<{}>, StyledComponentProps {
+  name: string
+  helps: {
+    commands: string[]
+    category: string
+    description: string
+    examples: string[]
+    notes: string[]
+  }[]
+  color: string
+  updateHeight: () => void
+}
 interface CommandSectionState {
   query: string
   seaching?: boolean

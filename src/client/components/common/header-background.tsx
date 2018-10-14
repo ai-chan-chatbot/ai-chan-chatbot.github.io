@@ -4,7 +4,7 @@ import {withStyles, Theme, StyledComponentProps, StyleRules} from '@material-ui/
 import {TransitionGroup, Transition} from 'react-transition-group'
 import {TransitionStatus} from 'react-transition-group/Transition'
 
-const duration = 600
+const duration = 1500
 class BackgroundRipple extends React.Component<BackgroundRippleProps, BackgroundRippleState> {
   render() {
     const {animate, appear, key, size, color} = this.props
@@ -117,7 +117,7 @@ class HeaderBackground extends React.Component<HeaderBackgroundProps, HeaderBack
             pastRipples.includes(ripple.key)? {...ripple, appear:false}:ripple
           )
         }))
-      , 300)
+      , duration)
     })
   }
   render() {

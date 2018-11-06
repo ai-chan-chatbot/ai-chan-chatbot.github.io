@@ -86,10 +86,12 @@ class CommandSection extends React.Component<CommandSectionProps, CommandSection
     }
   }
   expand = (key:string) => {
+    const {updateHeight} = this.props
+    const updateHeightAfterAnimation = () => setTimeout(updateHeight, 300)
     if(this.state.active === key) {
-      this.setState({active:undefined})
+      this.setState({active:undefined}, updateHeightAfterAnimation)
     } else {
-      this.setState({active:key})
+      this.setState({active:key}, updateHeightAfterAnimation)
     }
   }
   searchQuery = (event:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

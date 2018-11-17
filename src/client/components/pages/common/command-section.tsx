@@ -71,6 +71,7 @@ const styles = (theme:Theme):StyleRules<string> => ({
 @(withStyles as any)(styles)
 class CommandSection extends React.Component<CommandSectionProps, CommandSectionState> {
   input:HTMLInputElement
+  updateHeightTimeout:number | NodeJS.Timer
   constructor(props:CommandSectionProps) {
     super(props)
     this.state = {
@@ -80,18 +81,20 @@ class CommandSection extends React.Component<CommandSectionProps, CommandSection
     }
   }
   componentDidMount() {
+    this.updateHeight()
+  }
+  updateHeight = () => {
     const {updateHeight} = this.props
     if(updateHeight) {
-      setTimeout(updateHeight)
+      if(this.updateHeightTimeout) clearTimeout(this.updateHeightTimeout as number)
+      this.updateHeightTimeout = setTimeout(updateHeight, 300) as number | NodeJS.Timer
     }
   }
   expand = (key:string) => {
-    const {updateHeight} = this.props
-    const updateHeightAfterAnimation = () => setTimeout(updateHeight, 300)
     if(this.state.active === key) {
-      this.setState({active:undefined}, updateHeightAfterAnimation)
+      this.setState({active:undefined}, this.updateHeight)
     } else {
-      this.setState({active:key}, updateHeightAfterAnimation)
+      this.setState({active:key}, this.updateHeight)
     }
   }
   searchQuery = (event:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -158,10 +161,11 @@ class CommandSection extends React.Component<CommandSectionProps, CommandSection
             [{category:help.category, helps:[help]}]:
             []
           ]:category,
-        []).map(each =>
+        []).map((each, eachIndex, categories) =>
           <div key={each.category} className={classes.commandCategory}>
-            {each.helps.map(help =>
+            {each.helps.map((help, helpIndex, helps) =>
               <ExpansionPanel disabled={help.description === ''}
+                innerRef={ref => eachIndex === categories.length - 1 && helpIndex === helps.length - 1 && this.updateHeight()}
                 key={help.commands[0]}
                 expanded={help.commands[0] === active}
                 onChange={() => this.expand(help.commands[0])}

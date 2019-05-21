@@ -120,13 +120,16 @@ class CommandSection extends React.Component<CommandSectionProps, CommandSection
     const {classes, helps, color} = this.props
     const {query, seaching, active} = this.state
     const highlightQuery = (paragraph:string) => {
-      const found = query && paragraph.includes(query.toUpperCase())? query.toUpperCase():query
-      return paragraph.split(found).reduce((content, notQuery, index) => 
+      const regexp = query && new RegExp(query.split('').map(char =>
+        /\W/.test(char)? `\\${char}`:char
+      ).join(''), 'gi')
+      const found = paragraph.match(regexp)
+      return paragraph.split(regexp).reduce((content, notQuery, index) => 
         index === 0? [
           notQuery
         ]:[
           ...content,
-          <span key={index} style={{color}}>{found}</span>,
+          <span key={index} style={{color}}>{found[index - 1]}</span>,
           notQuery
         ]
       , [])

@@ -247,7 +247,7 @@ class LandingPage extends ReSub.ComponentBase<LandingPageProps, LandingPageState
         <div className={classes.footer}>
           <Grid container justify='space-between' alignItems='center' classes={{container:classes.pageContainer}}>
             <Typography variant='caption' classes={{root:classes.footerText}} style={{color:this.foregroundColor()}}>
-              Developed by: Ching Yaw Hao, Vince Celis, Yudhaime
+              Developed by: Ching Yaw Hao, RaikireHiuduo, Lucatiel
             </Typography>
             <Typography variant='caption' classes={{root:classes.footerText}} style={{color:this.foregroundColor()}}>
               <a className={classes.link} href='https://discord.gg/4y2RzFy'>Try It</a> | <a className={classes.link} href='https://www.patreon.com/user?u=10662508'>Support Us</a> 

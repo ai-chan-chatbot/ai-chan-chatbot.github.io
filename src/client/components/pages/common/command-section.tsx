@@ -90,7 +90,7 @@ const CommandSection = (props:CommandSectionProps) => {
     }
   }
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     updateHeight()
   })
 

@@ -1,38 +1,56 @@
-import {StoreBase, AutoSubscribeStore, autoSubscribe} from 'resub'
+import {Dispatch} from 'redux'
+import {useSelector, useDispatch} from 'react-redux'
+import {State as GlobalState, Store} from './'
 
-@AutoSubscribeStore
-export class ScreenStore extends StoreBase {
-  private _type:'xl-desktop' | 'lg-desktop' | 'md-desktop' | 'sm-tablet' | 'xs-phone'
+export type ScreenType = 'xl-desktop' | 'lg-desktop' | 'md-desktop' | 'sm-tablet' | 'xs-phone'
 
-  constructor() {
-    super()
-    this.startTrackingScreenType()
-  }
-
-  trackScreenType = () => {
-    const width = window.innerWidth
-    if(width >= 1920) {
-      this._type = 'xl-desktop'
-    } else if(width >= 1280) {
-      this._type = 'lg-desktop'
-    } else if(width >= 960) {
-      this._type = 'md-desktop'
-    } else if(width >= 600) {
-      this._type = 'sm-tablet'
-    } else {
-      this._type = 'xs-phone'
-    }
-    this.trigger()
-  }
-  startTrackingScreenType = () => {
-    this.trackScreenType()
-    window.addEventListener('resize', this.trackScreenType)
-  }
-
-  @autoSubscribe
-  type() {
-    return this._type
-  }
+export interface State {
+  type: ScreenType
+}
+export type Action = {
+  type: 'screen-resize'
+  screenType: ScreenType
 }
 
-export default new ScreenStore()
+export const useScreenState = () => {
+  const state = useSelector<GlobalState, State>(state => state.screen)
+  const dispatch = useDispatch<Dispatch<Action>>()
+  const actions = {}
+  return [
+    state,
+    actions
+  ] as [
+    State,
+    typeof actions
+  ]
+}
+
+const trackScreenType = () => {
+  const width = window.innerWidth
+  const type:ScreenType = width >= 1920? 'xl-desktop'
+    : width >= 1280? 'lg-desktop'
+    : width >= 960? 'md-desktop'
+    : width >= 600? 'sm-tablet'
+    : 'xs-phone'
+  return type
+}
+export const reducer = (state:State = {type:trackScreenType()}, action:Action) => {
+  switch (action.type) {
+    case 'screen-resize':
+      return {
+        ...state,
+        type: action.screenType
+      }
+    default:
+      return state
+  }
+}
+export const construct = (store:Store) => {
+  window.addEventListener('resize', () => {
+    const screenState = store.getState()?.screen
+    const screenType = trackScreenType()
+    if(screenState?.type !== screenType) {
+      store.dispatch({type:'screen-resize', screenType})
+    }
+  })
+}

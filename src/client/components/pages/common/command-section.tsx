@@ -1,5 +1,6 @@
 import * as React from 'react'
-import {withStyles, Theme, StyledComponentProps, StyleRules} from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/styles'
+import {Theme} from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
@@ -11,9 +12,9 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import IconButton from '@material-ui/core/IconButton'
 import {ExpandMore as ExpandMoreIcon, Search as SearchIcon} from '@material-ui/icons'
 
-import * as StringUtil from '../../../utility/string'
+import {conjuctJoin} from '../../../utility/string'
 
-const styles = (theme:Theme):StyleRules<string> => ({
+const useStyles = makeStyles((theme:Theme) => ({
   searchCardSection: {
     margin: '16px 0 24px'
   },
@@ -66,49 +67,64 @@ const styles = (theme:Theme):StyleRules<string> => ({
   },
   commandDetailParagraph: {
     wordBreak: 'break-word'
+  },
+  commandExpandPlaceholder: {
+    height:'24px',
+    width:'24px'
   }
-})
-@(withStyles as any)(styles)
-class CommandSection extends React.Component<CommandSectionProps, CommandSectionState> {
-  input:HTMLInputElement
-  updateHeightTimeout:number | NodeJS.Timer
-  constructor(props:CommandSectionProps) {
-    super(props)
-    this.state = {
-      query: undefined,
-      seaching: false,
-      active: undefined
-    }
-  }
-  componentDidMount() {
-    this.updateHeight()
-  }
-  updateHeight = () => {
-    const {updateHeight} = this.props
+}))
+let input:HTMLInputElement
+let updateHeightTimeout:number | NodeJS.Timer
+const CommandSection = (props:CommandSectionProps) => {
+  const [state, setState] = React.useState<CommandSectionState>({
+    query: undefined,
+    seaching: false,
+    active: undefined
+  })
+
+  const updateHeight = () => {
+    const {updateHeight} = props
     if(updateHeight) {
-      if(this.updateHeightTimeout) clearTimeout(this.updateHeightTimeout as number)
-      this.updateHeightTimeout = setTimeout(updateHeight, 300) as number | NodeJS.Timer
+      if(updateHeightTimeout) clearTimeout(updateHeightTimeout as number)
+      updateHeightTimeout = setTimeout(updateHeight, 300) as number | NodeJS.Timer
     }
   }
-  expand = (key:string) => {
-    if(this.state.active === key) {
-      this.setState({active:undefined}, this.updateHeight)
+
+  React.useEffect(() => {
+    updateHeight()
+  })
+
+  const expand = (key:string) => {
+    if(state.active === key) {
+      setState({
+        ...state,
+        active: undefined
+      })
     } else {
-      this.setState({active:key}, this.updateHeight)
+      setState({
+        ...state,
+        active: key
+      })
     }
   }
-  searchQuery = (event:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const searchQuery = (event:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const value = event.target.value
-    this.setState({query:value === ''? undefined:value.toLowerCase()})
+    setState({
+      ...state,
+      query:value === ''? undefined:value.toLowerCase()
+    })
   }
-  focusInput = () => {
-    this.input.focus()
+  const focusInput = () => {
+    input?.focus()
   }
-  onFocusInput = (focus:boolean) => {
-    this.setState({seaching:focus})
+  const onFocusInput = (focus:boolean) => {
+    setState({
+      ...state,
+      seaching: focus
+    })
   }
-  prefix = (command:string) => {
-    const {name} = this.props
+  const prefix = (command:string) => {
+    const {name} = props
     const check = command.split(' ')[0]
     if(check === 'send') {
       return `@${name} `
@@ -116,103 +132,107 @@ class CommandSection extends React.Component<CommandSectionProps, CommandSection
       return PREFIX
     }
   }
-  render() {
-    const {classes, helps, color} = this.props
-    const {query, seaching, active} = this.state
-    const highlightQuery = (paragraph:string) => {
-      const regexp = query && new RegExp(query.split('').map(char =>
-        /\W/.test(char)? `\\${char}`:char
-      ).join(''), 'gi')
-      const found = paragraph.match(regexp)
-      return paragraph.split(regexp).reduce((content, notQuery, index) => 
-        index === 0? [
-          notQuery
-        ]:[
-          ...content,
-          <span key={index} style={{color}}>{found[index - 1]}</span>,
-          notQuery
-        ]
-      , [])
-    }
-    return (
-      <div className={classes.commandSection}>
-        <div className={classes.searchCardSection}>
-          <Card className={classes.searchCard} elevation={seaching? 8:2}>
-            <CardContent className={classes.searchCardContent}>
-              <Input inputRef={input => this.input = input} fullWidth disableUnderline
-                onChange={this.searchQuery}
-                value={query || ''}
-                onFocus={() => this.onFocusInput(true)}
-                onBlur={() => this.onFocusInput(false)}
-                endAdornment={
-                  <InputAdornment position='end'>
-                    <IconButton onClick={this.focusInput}><SearchIcon/></IconButton>
-                  </InputAdornment>
-                }
-              />
-            </CardContent>
-          </Card>
-        </div>
-        {helps.reduce((category, help) => 
-          !query || help.commands.some(command => command.includes(query)) || help.category.includes(query.toUpperCase())? [
-            ...category.map(each =>
-              each.category === help.category?
-              {category:each.category, helps:[...each.helps, help]}:
-              each
-            ),
-            ...!category.map(each => each.category).includes(help.category)?
-            [{category:help.category, helps:[help]}]:
-            []
-          ]:category,
-        []).map((each, eachIndex, categories) =>
-          <div key={each.category} className={classes.commandCategory}>
-            {each.helps.map((help, helpIndex, helps) =>
-              <ExpansionPanel disabled={help.description === ''}
-                innerRef={ref => eachIndex === categories.length - 1 && helpIndex === helps.length - 1 && this.updateHeight()}
-                key={help.commands[0]}
-                expanded={help.commands[0] === active}
-                onChange={() => this.expand(help.commands[0])}
-                classes={{root:classes.commandPanel}}
-              >
-                <ExpansionPanelSummary expandIcon={help.description !== '' && <ExpandMoreIcon/>}>
-                  <div className={classes.commandTitleContainer}>
-                    <div className={classes.commandTitle}>
-                      <Typography variant='subheading'>
-                        {highlightQuery(StringUtil.conjuctJoin(help.commands.map(command => this.prefix(command) + command)))}
-                      </Typography>
-                    </div>
-                    <div className={classes.commandTitle}>
-                      <Typography variant='caption'>{highlightQuery(help.category)}</Typography>
-                    </div>
-                  </div>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails className={classes.commandDetail}>
-                  <Typography variant='caption' component='h5'>Description</Typography>
-                  <Typography className={classes.commandDetailParagraph} component='p'>
-                    {help.description}
-                  </Typography>
-                  {help.examples.length > 0 && <Typography className={classes.commandSubheading} variant='caption' component='h5'>Examples</Typography>}
-                  {help.examples.map((example, index) =>
-                    <Typography key={index} className={classes.commandExamplePre} component='pre' gutterBottom>
-                      {this.prefix(example) + example}
-                    </Typography>
-                  )}
-                  {help.notes.length > 0 && <Typography className={classes.commandSubheading} variant='caption' component='h5'>Notes</Typography>}
-                  {help.notes.map((note, index) =>
-                    <Typography key={index} component='p' gutterBottom>
-                      {note}
-                    </Typography>
-                  )}
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-            )}
-          </div>
-        )}
+  
+  const classes = useStyles({})
+  const {helps, color} = props
+  const {query, seaching, active} = state
+  const highlightQuery = (paragraph:string) => {
+    const regexp = query && new RegExp(query.split('').map(char =>
+      /\W/.test(char)? `\\${char}`:char
+    ).join(''), 'gi')
+    const found = paragraph.match(regexp)
+    return paragraph.split(regexp).reduce((content, notQuery, index) => 
+      index === 0? [
+        notQuery
+      ]:[
+        ...content,
+        <span key={index} style={{color}}>{found[index - 1]}</span>,
+        notQuery
+      ]
+    , [])
+  }
+  return (
+    <div className={classes.commandSection}>
+      <div className={classes.searchCardSection}>
+        <Card className={classes.searchCard} elevation={seaching? 8:2}>
+          <CardContent className={classes.searchCardContent}>
+            <Input inputRef={ref => input = ref} fullWidth disableUnderline
+              onChange={searchQuery}
+              value={query || ''}
+              onFocus={() => onFocusInput(true)}
+              onBlur={() => onFocusInput(false)}
+              endAdornment={
+                <InputAdornment position='end'>
+                  <IconButton onClick={focusInput}><SearchIcon/></IconButton>
+                </InputAdornment>
+              }
+            />
+          </CardContent>
+        </Card>
       </div>
-    )
-  } 
+      {helps.reduce((category, help) => 
+        !query || help.commands.some(command => command.includes(query)) || help.category.includes(query.toUpperCase())? [
+          ...category.map(each =>
+            each.category === help.category?
+            {category:each.category, helps:[...each.helps, help]}:
+            each
+          ),
+          ...!category.map(each => each.category).includes(help.category)?
+          [{category:help.category, helps:[help]}]:
+          []
+        ]:category,
+      []).map((each, eachIndex, categories) =>
+        <div key={each.category} className={classes.commandCategory}>
+          {each.helps.map((help, helpIndex, helps) =>
+            <ExpansionPanel disabled={help.description === ''}
+              key={help.commands[0]}
+              expanded={help.commands[0] === active}
+              onChange={() => expand(help.commands[0])}
+              classes={{root:classes.commandPanel}}
+            >
+              <ExpansionPanelSummary
+                expandIcon={help.description !== ''
+                  ? <ExpandMoreIcon/>
+                  : <div className={classes.commandExpandPlaceholder}/>
+                }
+              >
+                <div className={classes.commandTitleContainer}>
+                  <div className={classes.commandTitle}>
+                    <Typography variant='subtitle1'>
+                      {highlightQuery(conjuctJoin(help.commands.map(command => prefix(command) + command)))}
+                    </Typography>
+                  </div>
+                  <div className={classes.commandTitle}>
+                    <Typography variant='caption'>{highlightQuery(help.category)}</Typography>
+                  </div>
+                </div>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails className={classes.commandDetail}>
+                <Typography variant='caption'>Description</Typography>
+                <Typography className={classes.commandDetailParagraph} component='p'>
+                  {help.description}
+                </Typography>
+                {help.examples.length > 0 && <Typography className={classes.commandSubheading} variant='caption'>Examples</Typography>}
+                {help.examples.map((example, index) =>
+                  <Typography key={index} className={classes.commandExamplePre} component='pre' gutterBottom>
+                    {prefix(example) + example}
+                  </Typography>
+                )}
+                {help.notes.length > 0 && <Typography className={classes.commandSubheading} variant='caption'>Notes</Typography>}
+                {help.notes.map((note, index) =>
+                  <Typography key={index} variant='body1' gutterBottom>
+                    {note}
+                  </Typography>
+                )}
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          )}
+        </div>
+      )}
+    </div>
+  )
 }
-interface CommandSectionProps extends React.Props<{}>, StyledComponentProps {
+interface CommandSectionProps {
   name: string
   helps: {
     commands: string[]
@@ -222,7 +242,7 @@ interface CommandSectionProps extends React.Props<{}>, StyledComponentProps {
     notes: string[]
   }[]
   color: string
-  updateHeight: () => void
+  updateHeight?: () => void
 }
 interface CommandSectionState {
   query: string

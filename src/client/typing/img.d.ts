@@ -1,4 +1,4 @@
 declare module '*.png' {
   const pic:string
-  export = pic
+  export default pic
 }

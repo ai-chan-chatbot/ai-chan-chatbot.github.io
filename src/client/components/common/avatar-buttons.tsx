@@ -1,8 +1,9 @@
 import * as React from 'react'
-import {withStyles, Theme, StyledComponentProps, StyleRules} from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/styles'
+import {Theme} from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 
-const styles = (theme:Theme):StyleRules<string> => ({
+const useStyles = makeStyles((theme:Theme) => ({
   avatarButtons: {
     display: 'flex',
     justifyContent: 'center',
@@ -16,6 +17,11 @@ const styles = (theme:Theme):StyleRules<string> => ({
     padding: '8px 28px'
   },
   avatarButton: {
+    width: '56px',
+    minWidth: '56px',
+    height: '56px',
+    padding: '0',
+    borderRadius: '28px',
     transition: 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, background 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'
   },
   avatarButtonActive: {
@@ -25,11 +31,10 @@ const styles = (theme:Theme):StyleRules<string> => ({
     maxWidth: '90%',
     maxHeight: '90%'
   }
-})
-@(withStyles as any)(styles)
-class AvatarButtons extends React.Component<AvatarButtonsProps, AvatarButtonsState> {
-  position = () => {
-    const {selected, buttons} = this.props
+}))
+const AvatarButtons = (props:AvatarButtonsProps) => {
+  const getPosition = () => {
+    const {selected, buttons} = props
     const index = buttons.map(button => button.key).indexOf(selected)
     if(index >= 0) {
       const position = (buttons.length - 1) / 2 - index
@@ -38,30 +43,30 @@ class AvatarButtons extends React.Component<AvatarButtonsProps, AvatarButtonsSta
       return 0
     }
   }
-  render() {
-    const {classes, selected, buttons} = this.props
-    return (
-      <div className={classes.avatarButtons} style={{transform:`translateX(${this.position()}px)`}}>
-        {buttons.map(button =>
-          <div key={button.key} className={[classes.avatarButtonContainer, selected === button.key? classes.avatarButtonContainerActive:''].join(' ')}>
-            <Button variant='fab' onClick={button.onClick}
-              classes={{
-                root: [
-                  classes.avatarButton,
-                  selected === button.key? classes.avatarButtonActive:'',
-                  selected === button.key? button.color.primary:button.color.secondary
-                ].join(' ')
-              }}
-            >
-              <img className={classes.avatarButtonIcon} src={button.image}/>
-            </Button>
-          </div>
-        )}
-      </div>
-    )
-  } 
+  
+  const classes = useStyles({})
+  const {selected, buttons} = props
+  return (
+    <div className={classes.avatarButtons} style={{transform:`translateX(${getPosition()}px)`}}>
+      {buttons.map(button =>
+        <div key={button.key} className={[classes.avatarButtonContainer, selected === button.key? classes.avatarButtonContainerActive:''].join(' ')}>
+          <Button onClick={button.onClick}
+            classes={{
+              root: [
+                classes.avatarButton,
+                selected === button.key? classes.avatarButtonActive:'',
+                selected === button.key? button.color.primary:button.color.secondary
+              ].join(' ')
+            }}
+          >
+            <img className={classes.avatarButtonIcon} src={button.image}/>
+          </Button>
+        </div>
+      )}
+    </div>
+  )
 }
-interface AvatarButtonsProps extends React.Props<{}>, StyledComponentProps {
+interface AvatarButtonsProps {
   selected: string
   buttons: {
     key: string
@@ -73,6 +78,5 @@ interface AvatarButtonsProps extends React.Props<{}>, StyledComponentProps {
     onClick: () => void
   }[]
 }
-interface AvatarButtonsState {}
 
 export default AvatarButtons

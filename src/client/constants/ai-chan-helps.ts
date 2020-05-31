@@ -7,7 +7,7 @@ export default (prefix:string) => [{
 }, {
   commands: ['vote'],
   category: 'SUPPORT',
-  description: 'Support our bot on [DiscordBots.org](https://discordbots.org/bot/434737143395516416?) by vote',
+  description: 'Support our bot on [DiscordBots.org](https://discordbots.org/bot/434737143395516416) by vote',
   examples: [],
   notes: []
 }, {
@@ -127,8 +127,8 @@ export default (prefix:string) => [{
   description: 'Select your faction on faction war event',
   examples: ['faction', 'faction list'],
   notes: [
-    'for first setup need user with manage roles permission to do this command instalation',
-    `use ${prefix}faction list to show the member faction list`,
+    'For first setup, user with permission to manage role needs to run this command to prepare Ai Chan',
+    `Use ${prefix}faction list to show the member faction list`,
     'You can\'t change faction after choosing, if you make a mistake you must contact your server administrator/moderators to remove your faction role',
     `Admin or someone with manage-roles permission need to do <${prefix}faction reset> to make all member be able to choose their faction again`
   ]

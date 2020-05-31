@@ -1,12 +1,15 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles'
+import {Provider} from 'react-redux'
+import {ThemeProvider} from '@material-ui/styles'
+import {Theme, createMuiTheme} from '@material-ui/core/styles'
 import {lightGreen, green, grey} from '@material-ui/core/colors'
 
+import store from './store'
 import Favicon from './components/favicon'
 import LandingPage from './components/landing-page'
 
-const theme = createMuiTheme({
+const theme:Theme = createMuiTheme({
   palette: {
     type: 'dark',
     primary: {
@@ -28,8 +31,10 @@ const theme = createMuiTheme({
 })
 
 ReactDOM.render(
-  <MuiThemeProvider theme={theme}>
-    <Favicon/>
-    <LandingPage/>
-  </MuiThemeProvider>
+  <Provider store={store}>
+    <ThemeProvider theme={theme}>
+      <Favicon/>
+      <LandingPage/>
+    </ThemeProvider>
+  </Provider>
 , document.getElementById('root'))

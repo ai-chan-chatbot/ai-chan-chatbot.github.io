@@ -1,13 +1,13 @@
 import * as React from 'react'
-import * as ReSub from 'resub'
-import {withStyles, Theme, StyledComponentProps, StyleRules} from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/styles'
+import {Theme} from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 
-import * as HonkaiImpact from '../../../asset/img/honkai-impact.png'
-import * as Discord from '../../../asset/img/discord.png'
-import screenStore from '../../store/screen'
+import {useScreenState} from '../../store/screen'
+import HonkaiImpact from '../../../asset/img/honkai-impact.png'
+import Discord from '../../../asset/img/discord.png'
 
-const styles = (theme:Theme):StyleRules<string> => ({
+const useStyles = makeStyles((theme:Theme) => ({
   headerContainer: {
     position: 'relative',
     display: 'flex',
@@ -54,52 +54,47 @@ const styles = (theme:Theme):StyleRules<string> => ({
       margin: '-9px 0',
     }
   }
-})
-@(withStyles as any)(styles)
-class HeaderBlocks extends ReSub.ComponentBase<HeaderBlocksProps, HeaderBlocksState> {
-  protected _buildState(props:{}, initial:boolean):HeaderBlocksState {
-    return {
-      screenType: screenStore.type()
-    }
-  }
-  position = () => {
-    const {selected, characters} = this.props
+}))
+const HeaderBlocks = (props:HeaderBlocksProps) => {
+  const [{type:screenType}] = useScreenState()
+
+  const getPosition = () => {
+    const {selected, characters} = props
     const index = characters.map(character => character.key).indexOf(selected)
     return (-index * 100) + '%'
   }
-  render() {
-    const {classes, characters} = this.props
-    const {screenType} = this.state
-    return (
-      <div className={classes.headerContainer} style={{
-        width: characters? `${characters.length * 100}vw`:undefined,
-        marginLeft: this.position()
-      }}>
-        {characters.map(character =>
-          <div key={character.key} className={classes.headerBlock}>
-            <img src={character.image.src} className={character.image.className}/>
-            <div className={classes.headerText}>
-              <Typography classes={{root:classes.headerTextFont}}
-                variant={['sm-tablet', 'xs-phone'].includes(screenType)? 'h2':'h1'}
-                style={{color:character.color.primary}}
-              >
-                <span style={{whiteSpace:'pre'}}>{character.name}</span>
-              </Typography>
-              <Typography classes={{root:classes.headerTextFont}}
-                variant={['sm-tablet', 'xs-phone'].includes(screenType)? 'subtitle1':'h5'}
-                style={{color:character.color.secondary}}
-              >
-                from <img className={classes.honkaiImpactImage} src={HonkaiImpact}/>
-                comes to <img className={classes.discordImage} src={Discord}/>
-              </Typography>
-            </div>
+  
+  const classes = useStyles({})
+  const {characters} = props
+  return (
+    <div className={classes.headerContainer} style={{
+      width: characters? `${characters.length * 100}vw`:undefined,
+      marginLeft: getPosition()
+    }}>
+      {characters.map(character =>
+        <div key={character.key} className={classes.headerBlock}>
+          <img src={character.image.src} className={character.image.className}/>
+          <div className={classes.headerText}>
+            <Typography classes={{root:classes.headerTextFont}}
+              variant={['sm-tablet', 'xs-phone'].includes(screenType)? 'h2':'h1'}
+              style={{color:character.color.primary}}
+            >
+              <span style={{whiteSpace:'pre'}}>{character.name}</span>
+            </Typography>
+            <Typography classes={{root:classes.headerTextFont}}
+              variant={['sm-tablet', 'xs-phone'].includes(screenType)? 'subtitle1':'h5'}
+              style={{color:character.color.secondary}}
+            >
+              from <img className={classes.honkaiImpactImage} src={HonkaiImpact}/>
+              comes to <img className={classes.discordImage} src={Discord}/>
+            </Typography>
           </div>
-        )}
-      </div>
-    )
-  } 
+        </div>
+      )}
+    </div>
+  )
 }
-interface HeaderBlocksProps extends React.Props<{}>, StyledComponentProps {
+interface HeaderBlocksProps {
   selected: string
   characters: {
     key: string
@@ -113,9 +108,6 @@ interface HeaderBlocksProps extends React.Props<{}>, StyledComponentProps {
       secondary: string
     }
   }[]
-}
-interface HeaderBlocksState {
-  screenType: 'xl-desktop' | 'lg-desktop' | 'md-desktop' | 'sm-tablet' | 'xs-phone'
 }
 
 export default HeaderBlocks

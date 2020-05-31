@@ -1,19 +1,18 @@
 import * as React from 'react'
-import * as ReSub from 'resub'
-import {withStyles, Theme, StyledComponentProps, StyleRules} from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/styles'
+import {Theme} from '@material-ui/core/styles'
 import {orange} from '@material-ui/core/colors'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
 
-import screenStore from '../../store/screen'
 import helps from '../../constants/bronya-helps'
 import DemoSection from './common/demo-section'
 import CommandSection from './common/command-section'
-import * as UpdateDemo from '../../../asset/img/update-demo.png'
+import UpdateDemo from '../../../asset/img/update-demo.png'
 
-const styles = (theme:Theme):StyleRules<string> => ({
+const useStyles = makeStyles((theme:Theme) => ({
   '@import': [
     'url(https://fonts.googleapis.com/css?family=Righteous)',
     'url(https://fonts.googleapis.com/css?family=Roboto+Mono)'
@@ -31,6 +30,9 @@ const styles = (theme:Theme):StyleRules<string> => ({
     [`@media (max-width:${theme.breakpoints.values.sm}px)`]: {
       padding: '0 16px',
     }
+  },
+  text: {
+    color: 'white'
   },
   descriptionRow: {
     flexDirection: 'column',
@@ -59,75 +61,64 @@ const styles = (theme:Theme):StyleRules<string> => ({
     flexGrow: 1,
     margin: '16px'
   }
-})
-@(withStyles as any)(styles)
-class BronyaPage extends ReSub.ComponentBase<BronyaPageProps, BronyaPageState> {
-  protected _buildState(props:{}, initial:boolean):BronyaPageState {
-    return {
-      screenType: screenStore.type()
-    }
-  }
-  render() {
-    const {classes, updateHeight} = this.props
-    const {screenType} = this.state
-    return (
-      <div className={classes.container}>
-        <Grid container direction='column' alignItems='center' classes={{container:classes.pageContainer}}>
-          <Grid container justify='center' classes={{container:classes.descriptionRow}}>
-            <Typography variant='body1'>
-              Bronya is a valkyrie chatbot that are reserved for our patreon supporter.
-            </Typography>
-            <Typography variant='body1'>
-              If you want to chat with Bronya, just tag her.
-            </Typography>
-          </Grid>
-          <Grid container justify='center' classes={{container:classes.inviteButtons}}>
-            <Button classes={{root:classes.inviteButton}} variant='contained' size='large'
-              href='https://www.patreon.com/user?u=10662508'
-            >
-              SUPPORT US
-            </Button>
-          </Grid>
-          <Grid container classes={{container:classes.dividerRow}}>
-            <Divider classes={{root:classes.divider}}/>
-            <Typography variant='title'>
-              FEATURES
-            </Typography>
-            <Divider classes={{root:classes.divider}}/>
-          </Grid>
-          <DemoSection
-            demos={[{
-              headline: 'Updates You of Game Changes',
-              description: [
-                `Bronya takes information gathered from the official Honkai Impact Facebook page and update you.`
-              ],
-              image: UpdateDemo
-            }]}
-            color={orange[400]}
-          />
-          <Grid container classes={{container:classes.dividerRow}}>
-            <Divider classes={{root:classes.divider}}/>
-            <Typography variant='title'>
-              COMMANDS
-            </Typography>
-            <Divider classes={{root:classes.divider}}/>
-          </Grid>
-          <CommandSection
-            name={'Bronya'}
-            helps={helps(PREFIX)}
-            color={orange[300]}
-            updateHeight={updateHeight}
-          />
+}))
+const BronyaPage = (props:BronyaPageProps) => {
+  const classes = useStyles({})
+  const {updateHeight} = props
+  return (
+    <div className={classes.container}>
+      <Grid container direction='column' alignItems='center' classes={{container:classes.pageContainer}}>
+        <Grid container justify='center' classes={{container:classes.descriptionRow}}>
+          <Typography variant='body1' classes={{root:classes.text}}>
+            Bronya is a valkyrie chatbot that are reserved for our patreon supporter.
+          </Typography>
+          <Typography variant='body1' classes={{root:classes.text}}>
+            If you want to chat with Bronya, just tag her.
+          </Typography>
         </Grid>
-      </div>
-    )
-  } 
+        <Grid container justify='center' classes={{container:classes.inviteButtons}}>
+          <Button classes={{root:classes.inviteButton}} variant='contained' size='large'
+            href='https://www.patreon.com/user?u=10662508'
+          >
+            SUPPORT US
+          </Button>
+        </Grid>
+        <Grid container classes={{container:classes.dividerRow}}>
+          <Divider classes={{root:classes.divider}}/>
+          <Typography variant='h5' classes={{root:classes.text}}>
+            FEATURES
+          </Typography>
+          <Divider classes={{root:classes.divider}}/>
+        </Grid>
+        <DemoSection
+          demos={[{
+            headline: 'Updates You of Game Changes',
+            description: [
+              `Bronya takes information gathered from the official Honkai Impact Facebook page and update you.`
+            ],
+            image: UpdateDemo
+          }]}
+          color={orange[400]}
+        />
+        <Grid container classes={{container:classes.dividerRow}}>
+          <Divider classes={{root:classes.divider}}/>
+          <Typography variant='h5' classes={{root:classes.text}}>
+            COMMANDS
+          </Typography>
+          <Divider classes={{root:classes.divider}}/>
+        </Grid>
+        <CommandSection
+          name={'Bronya'}
+          helps={helps(PREFIX)}
+          color={orange[300]}
+          updateHeight={updateHeight}
+        />
+      </Grid>
+    </div>
+  )
 }
-interface BronyaPageProps extends React.Props<{}>, StyledComponentProps {
-  updateHeight: () => void
-}
-interface BronyaPageState {
-  screenType: 'xl-desktop' | 'lg-desktop' | 'md-desktop' | 'sm-tablet' | 'xs-phone'
+interface BronyaPageProps {
+  updateHeight?: () => void
 }
 
 export default BronyaPage

@@ -73,6 +73,7 @@ const useStyles = makeStyles((theme:Theme) => ({
     width:'24px'
   }
 }))
+let initial = true
 let input:HTMLInputElement
 let updateHeightTimeout:number | NodeJS.Timer
 const CommandSection = (props:CommandSectionProps) => {
@@ -82,16 +83,20 @@ const CommandSection = (props:CommandSectionProps) => {
     active: undefined
   })
 
-  const updateHeight = () => {
+  React.useLayoutEffect(() => {
     const {updateHeight} = props
     if(updateHeight) {
-      if(updateHeightTimeout) clearTimeout(updateHeightTimeout as number)
-      updateHeightTimeout = setTimeout(updateHeight, 300) as number | NodeJS.Timer
+      const update = () => {
+        updateHeightTimeout = undefined
+        updateHeight()
+      }
+      if(initial) {
+        initial = false
+        updateHeightTimeout = setTimeout(update, 3000)
+      } else if(!updateHeightTimeout) {
+        updateHeightTimeout = setTimeout(update, 300)
+      }
     }
-  }
-
-  React.useLayoutEffect(() => {
-    updateHeight()
   })
 
   const expand = (key:string) => {

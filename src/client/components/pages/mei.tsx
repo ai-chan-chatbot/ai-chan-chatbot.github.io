@@ -7,10 +7,11 @@ import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
 
-import helps from '../../constants/mei-helps'
+import generateHelps from '../../constants/mei'
 import DemoSection from './common/demo-section'
 import CommandSection from './common/command-section'
-import ReminderDemo from '../../../asset/img/reminder-demo.png'
+import HonkaiEventDemo from '../../../asset/img/honkai-event-demo.png'
+import ServerUpdateDemo from '../../../asset/img/server-update-demo.png'
 
 const useStyles = makeStyles((theme:Theme) => ({
   '@import': [
@@ -95,12 +96,21 @@ const MeiPage = (props:MeiPageProps) => {
         </Grid>
         <DemoSection
           demos={[{
-            headline: 'Remind You of Game Events',
+            headline: 'Remind You of In Game Events',
             description: [
-              `You want to be reminded of Mei's lunch and dinner, boss invasion, Samsara reset, and Abyss ending?`,
+              `You want to be reminded of Mei's lunch and dinner, battle simulation, open world reset, and abyss ending?`,
               'Mei will remind you.'
             ],
-            image: ReminderDemo
+            image: HonkaiEventDemo
+          }, {
+            headline: 'Display New Joiner or Leaver, Member Change Nickname',
+            description: [
+              'You want to know some of the activities happening in ur discord server?',
+              'Bronya will display it for you.',
+              'Kiana will welcome your newly recruit members and notifying everyone to give a warm embrace...',
+              `Mei's assignment for Bronya and Kiana`
+            ],
+            image: ServerUpdateDemo
           }]}
           color={purple[400]}
         />
@@ -113,7 +123,7 @@ const MeiPage = (props:MeiPageProps) => {
         </Grid>
         <CommandSection
           name={'Mei'}
-          helps={helps(PREFIX)}
+          helps={generateHelps(PREFIX)}
           color={purple[300]}
           updateHeight={updateHeight}
         />

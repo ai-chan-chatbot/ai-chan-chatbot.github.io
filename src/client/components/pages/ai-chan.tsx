@@ -7,13 +7,14 @@ import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
 
-import helps from '../../constants/ai-chan-helps'
+import generateHelps from '../../constants/ai-chan'
 import DemoSection from './common/demo-section'
 import CommandSection from './common/command-section'
-import WeaponDemo from '../../../asset/img/weapon-demo.png'
-import GachaDemo from '../../../asset/img/gacha-demo.png'
+import StigmataDemo from '../../../asset/img/stigmata-demo.png'
 import ValkyrieDemo from '../../../asset/img/valkyrie-demo.png'
 import RecommendationDemo from '../../../asset/img/recommendation-demo.png'
+import ElfDemo from '../../../asset/img/elf-demo.png'
+import GachaDemo from '../../../asset/img/gacha-demo.png'
 
 const useStyles = makeStyles((theme:Theme) => ({
   '@import': [
@@ -102,14 +103,7 @@ const AiChanPage = (props:AiChanPageProps) => {
               'You don\'t need to take screenshot and upload it to show info about game equipment.',
               'AI Chan will display it for you.'
             ],
-            image: WeaponDemo
-          }, {
-            headline: 'Gacha Simulation',
-            command: 'command: !gacha',
-            description: [
-              'Yeah, AI Chan know you are really like gacha system in Honkai Inpact 3rd so I bring simulation to your server to enhance your luck. (maybe)'
-            ],
-            image: GachaDemo
+            image: StigmataDemo
           }, {
             headline: 'Show & Describe Valkyrie',
             command: 'command: !valkyrie',
@@ -125,6 +119,20 @@ const AiChanPage = (props:AiChanPageProps) => {
               'You can see better set equipment for the valkyrie too...'
             ],
             image: RecommendationDemo
+          }, {
+            headline: 'Show & Describe ELF',
+            command: 'command: !elf',
+            description: [
+              'ELF Equipment Living Form is here too...'
+            ],
+            image: ElfDemo
+          }, {
+            headline: 'Gacha Simulation',
+            command: 'command: !gacha',
+            description: [
+              'Yeah, AI Chan know you are really like gacha system in Honkai Impact 3rd so I bring a simulation to your server to enhance your luck. (maybe)'
+            ],
+            image: GachaDemo
           }]}
           color={green[400]}
         />
@@ -137,7 +145,7 @@ const AiChanPage = (props:AiChanPageProps) => {
         </Grid>
         <CommandSection
           name={'Ai Chan'}
-          helps={helps(PREFIX)}
+          helps={generateHelps(PREFIX)}
           color={green[300]}
           updateHeight={updateHeight}
         />

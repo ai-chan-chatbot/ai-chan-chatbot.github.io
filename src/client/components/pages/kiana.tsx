@@ -7,11 +7,10 @@ import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
 
-import helps from '../../constants/kiana-helps'
+import generateHelps from '../../constants/kiana'
 import DemoSection from './common/demo-section'
 import CommandSection from './common/command-section'
-import EventDemo from '../../../asset/img/event-demo.png'
-import MemberDemo from '../../../asset/img/member-demo.png'
+import HonkaiUpdateDemo from '../../../asset/img/honkai-update-demo.png'
 
 const useStyles = makeStyles((theme:Theme) => ({
   '@import': [
@@ -93,19 +92,11 @@ const KianaPage = (props:KianaPageProps) => {
         </Grid>
         <DemoSection
           demos={[{
-            headline: 'Display New Joiner or Leaver, Member Change Nickname',
+            headline: 'Updates You of Game Changes',
             description: [
-              'You want to know some of the activities happening in ur discord server?',
-              'Kiana will display it for you.'
+              `Kiana gathers information from the official Honkai Impact social media and update you.`
             ],
-            image: EventDemo
-          }, {
-            headline: 'Welcome Armada Members for Joining',
-            command: 'command: !member',
-            description: [
-              'Kiana will welcome your newly recruit members and notifying everyone to give a warm embrace...'
-            ],
-            image: MemberDemo
+            image: HonkaiUpdateDemo
           }]}
           color={yellow[400]}
         />
@@ -118,7 +109,7 @@ const KianaPage = (props:KianaPageProps) => {
         </Grid>
         <CommandSection
           name={'Kiana'}
-          helps={helps(PREFIX)}
+          helps={generateHelps(PREFIX)}
           color={yellow[300]}
           updateHeight={updateHeight}
         />

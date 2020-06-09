@@ -13,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton'
 import {ExpandMore as ExpandMoreIcon, Search as SearchIcon} from '@material-ui/icons'
 
 import {conjuctJoin} from '../../../utility/string'
+import {Help} from '../../../constants'
 
 const useStyles = makeStyles((theme:Theme) => ({
   searchCardSection: {
@@ -128,13 +129,12 @@ const CommandSection = (props:CommandSectionProps) => {
       seaching: focus
     })
   }
-  const prefix = (command:string) => {
+  const prefix = (command:string, mentionOnly:boolean) => {
     const {name} = props
-    const check = command.split(' ')[0]
-    if(check === 'send') {
-      return `@${name} `
+    if(mentionOnly) {
+      return `@${name} ${command}`
     } else {
-      return PREFIX
+      return `${PREFIX}${command}`
     }
   }
   
@@ -175,7 +175,7 @@ const CommandSection = (props:CommandSectionProps) => {
           </CardContent>
         </Card>
       </div>
-      {helps.reduce((category, help) => 
+      {helps.reduce<{category:string, helps:Help[]}[]>((category, help) => 
         !query || help.commands.some(command => command.includes(query)) || help.category.includes(query.toUpperCase())? [
           ...category.map(each =>
             each.category === help.category?
@@ -186,9 +186,9 @@ const CommandSection = (props:CommandSectionProps) => {
           [{category:help.category, helps:[help]}]:
           []
         ]:category,
-      []).map((each, eachIndex, categories) =>
+      []).map((each) =>
         <div key={each.category} className={classes.commandCategory}>
-          {each.helps.map((help, helpIndex, helps) =>
+          {each.helps.map((help) =>
             <ExpansionPanel disabled={help.description === ''}
               key={help.commands[0]}
               expanded={help.commands[0] === active}
@@ -204,7 +204,7 @@ const CommandSection = (props:CommandSectionProps) => {
                 <div className={classes.commandTitleContainer}>
                   <div className={classes.commandTitle}>
                     <Typography variant='subtitle1'>
-                      {highlightQuery(conjuctJoin(help.commands.map(command => prefix(command) + command)))}
+                      {highlightQuery(conjuctJoin(help.commands.map(command => prefix(command, help.mentionOnly))))}
                     </Typography>
                   </div>
                   <div className={classes.commandTitle}>
@@ -220,7 +220,7 @@ const CommandSection = (props:CommandSectionProps) => {
                 {help.examples.length > 0 && <Typography className={classes.commandSubheading} variant='caption'>Examples</Typography>}
                 {help.examples.map((example, index) =>
                   <Typography key={index} className={classes.commandExamplePre} component='pre' gutterBottom>
-                    {prefix(example) + example}
+                    {prefix(example, help.mentionOnly)}
                   </Typography>
                 )}
                 {help.notes.length > 0 && <Typography className={classes.commandSubheading} variant='caption'>Notes</Typography>}
@@ -239,13 +239,7 @@ const CommandSection = (props:CommandSectionProps) => {
 }
 interface CommandSectionProps {
   name: string
-  helps: {
-    commands: string[]
-    category: string
-    description: string
-    examples: string[]
-    notes: string[]
-  }[]
+  helps: Help[]
   color: string
   updateHeight?: () => void
 }

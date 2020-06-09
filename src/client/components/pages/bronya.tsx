@@ -7,10 +7,10 @@ import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
 
-import helps from '../../constants/bronya-helps'
+import generateHelps from '../../constants/bronya'
 import DemoSection from './common/demo-section'
 import CommandSection from './common/command-section'
-import UpdateDemo from '../../../asset/img/update-demo.png'
+import MusicDemo from '../../../asset/img/music-demo.png'
 
 const useStyles = makeStyles((theme:Theme) => ({
   '@import': [
@@ -92,11 +92,11 @@ const BronyaPage = (props:BronyaPageProps) => {
         </Grid>
         <DemoSection
           demos={[{
-            headline: 'Updates You of Game Changes',
+            headline: 'Music Player',
             description: [
-              `Bronya takes information gathered from the official Honkai Impact Facebook page and update you.`
+              `Bronya uses her Project Bunny 19C to play u the best honkai music.`
             ],
-            image: UpdateDemo
+            image: MusicDemo
           }]}
           color={orange[400]}
         />
@@ -109,7 +109,7 @@ const BronyaPage = (props:BronyaPageProps) => {
         </Grid>
         <CommandSection
           name={'Bronya'}
-          helps={helps(PREFIX)}
+          helps={generateHelps(PREFIX)}
           color={orange[300]}
           updateHeight={updateHeight}
         />

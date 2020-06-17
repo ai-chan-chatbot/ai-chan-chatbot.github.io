@@ -269,10 +269,10 @@ const LandingPage = () => {
       <div className={classes.footer}>
         <Grid container justify='space-between' alignItems='center' classes={{container:classes.pageContainer}}>
           <Typography variant='caption' classes={{root:classes.footerText}} style={{color:getForegroundColor()}}>
-            Developed by: Ching Yaw Hao, RaikireHiuduo, Lucatiel
+            Developed by: Ching Yaw Hao, RaikireHiuduo, Lucatiel, Lil'Cookie
           </Typography>
           <Typography variant='caption' classes={{root:classes.footerText}} style={{color:getForegroundColor()}}>
-            <a className={classes.link} href='https://discord.gg/4y2RzFy'>Try It</a> | <a className={classes.link} href='https://www.patreon.com/user?u=10662508'>Support Us</a> 
+            <a className={classes.link} href='https://discord.gg/cWbWNuy'>Try It</a> | <a className={classes.link} href='https://www.patreon.com/user?u=10662508'>Support Us</a> 
           </Typography>
         </Grid>
       </div>

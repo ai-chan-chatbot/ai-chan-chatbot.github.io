@@ -6,8 +6,7 @@
   "scripts": {
     "postinstall": "npm run compile",
     "start": "NODE_ENV=development PREFIX=! webpack-dev-server --content-base app --history-api-fallback",
-    "compile": "npm run clean && NODE_ENV=production PREFIX=! webpack --display-error-details",
-    "clean": "ts-node -O '{\"module\": \"commonjs\"}' src/utility/clean-repo.ts",
+    "compile": "NODE_ENV=production PREFIX=! webpack --display-error-details",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

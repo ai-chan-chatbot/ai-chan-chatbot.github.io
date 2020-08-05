@@ -11,7 +11,7 @@ module.exports = {
     './src/client'
   ]:['./src/client'],
   output: {
-    path: path.join(__dirname),
+    path: path.join(__dirname, 'docs'),
     filename: '[name].bundle.js',
     chunkFilename: '[name].chunk.js',
 		publicPath: '/'

@@ -65,8 +65,9 @@ const useStyles = makeStyles((theme:Theme) => ({
     margin: '16px'
   }
 }))
-const AiChanPage:React.FunctionComponent<AiChanPageProps> = () => {
+const AiChanPage:React.FunctionComponent<AiChanPageProps> = (props) => {
   const classes = useStyles({})
+  const {updateHeight} = props
   return (
     <div className={classes.container}>
       <Grid container direction='column' alignItems='center' classes={{container:classes.pageContainer}}>
@@ -146,11 +147,14 @@ const AiChanPage:React.FunctionComponent<AiChanPageProps> = () => {
           name={'Ai Chan'}
           helps={generateHelps(PREFIX)}
           color={green[300]}
+          updateHeight={updateHeight}
         />
       </Grid>
     </div>
   )
 }
-type AiChanPageProps = {}
+type AiChanPageProps = {
+  updateHeight?: () => void
+}
 
 export default AiChanPage

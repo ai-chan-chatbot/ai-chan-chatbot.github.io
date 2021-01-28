@@ -68,6 +68,7 @@ const useStyles = makeStyles((theme:Theme) => ({
 }))
 const MeiPage:React.FunctionComponent<MeiPageProps> = (props) => {
   const classes = useStyles({})
+  const {updateHeight} = props
   return (
     <div className={classes.container}>
       <Grid container direction='column' alignItems='center' classes={{container:classes.pageContainer}}>
@@ -124,6 +125,7 @@ const MeiPage:React.FunctionComponent<MeiPageProps> = (props) => {
           name={'Mei'}
           helps={generateHelps(PREFIX)}
           color={purple[300]}
+          updateHeight={updateHeight}
         />
       </Grid>
     </div>

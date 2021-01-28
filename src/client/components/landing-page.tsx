@@ -160,7 +160,7 @@ const LandingPage:React.FunctionComponent = () => {
     return () => {
       window.removeEventListener('scroll', onScroll)
     }
-  })
+  }, [])
 
   const loadUpdateHeight = (updateHeight:() => void) => {
     setState({
@@ -272,10 +272,10 @@ const LandingPage:React.FunctionComponent = () => {
         index={['ai', 'kiana', 'mei', 'bronya'].indexOf(option)}
         onChangeIndex={switchView}
       >
-        <AiChanPage/>
-        <KianaPage/>
-        <MeiPage/>
-        <BronyaPage/>
+        <AiChanPage updateHeight={updateHeight}/>
+        <KianaPage updateHeight={updateHeight}/>
+        <MeiPage updateHeight={updateHeight}/>
+        <BronyaPage updateHeight={updateHeight}/>
       </SwipeableViews>
       <div className={classes.footer}>
         <Grid container justify='space-between' alignItems='center' classes={{container:classes.pageContainer}}>

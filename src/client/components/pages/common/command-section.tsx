@@ -75,12 +75,26 @@ const useStyles = makeStyles((theme:Theme) => ({
   }
 }))
 let input:HTMLInputElement
+let updateHeightTimeout:NodeJS.Timeout | number
 const CommandSection:React.FunctionComponent<CommandSectionProps> = (props) => {
   const [state, setState] = React.useState<CommandSectionState>({
     query: undefined,
     seaching: false,
     active: undefined
   })
+
+  React.useEffect(() => {
+    const {updateHeight} = props
+    if(updateHeight) {
+      const update = () => {
+        updateHeightTimeout = undefined
+        updateHeight()
+      }
+      if(!updateHeightTimeout) {
+        updateHeightTimeout = setTimeout(update, 300)
+      }
+    }
+  }, [state.active])
 
   const expand = (key:string) => {
     if(state.active === key) {
@@ -223,6 +237,7 @@ type CommandSectionProps = {
   name: string
   helps: Help[]
   color: string
+  updateHeight?: () => void
 }
 type CommandSectionState = {
   query: string

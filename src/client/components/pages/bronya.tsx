@@ -62,8 +62,9 @@ const useStyles = makeStyles((theme:Theme) => ({
     margin: '16px'
   }
 }))
-const BronyaPage:React.FunctionComponent<BronyaPageProps> = () => {
+const BronyaPage:React.FunctionComponent<BronyaPageProps> = (props) => {
   const classes = useStyles({})
+  const {updateHeight} = props
   return (
     <div className={classes.container}>
       <Grid container direction='column' alignItems='center' classes={{container:classes.pageContainer}}>
@@ -110,11 +111,14 @@ const BronyaPage:React.FunctionComponent<BronyaPageProps> = () => {
           name={'Bronya'}
           helps={generateHelps(PREFIX)}
           color={orange[300]}
+          updateHeight={updateHeight}
         />
       </Grid>
     </div>
   )
 }
-type BronyaPageProps = {}
+type BronyaPageProps = {
+  updateHeight?: () => void
+}
 
 export default BronyaPage

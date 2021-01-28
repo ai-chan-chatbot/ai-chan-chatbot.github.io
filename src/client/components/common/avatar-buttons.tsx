@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme:Theme) => ({
     maxHeight: '90%'
   }
 }))
-const AvatarButtons = (props:AvatarButtonsProps) => {
+const AvatarButtons:React.FunctionComponent<AvatarButtonsProps> = (props) => {
   const getPosition = () => {
     const {selected, buttons} = props
     const index = buttons.map(button => button.key).indexOf(selected)
@@ -66,7 +66,7 @@ const AvatarButtons = (props:AvatarButtonsProps) => {
     </div>
   )
 }
-interface AvatarButtonsProps {
+type AvatarButtonsProps = {
   selected: string
   buttons: {
     key: string

@@ -146,7 +146,7 @@ const useStyles = makeStyles((theme:Theme) => ({
     transition: 'color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'
   }
 }))
-const LandingPage = () => {
+const LandingPage:React.FunctionComponent = () => {
   const [{type:screenType}] = useScreenState()
   const [state, setState] = React.useState<LandingPageState>({
     option: 'ai',
@@ -156,6 +156,10 @@ const LandingPage = () => {
 
   React.useEffect(() => {
     document.querySelector('body').style.background = grey[800]
+    window.addEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+    }
   })
 
   const loadUpdateHeight = (updateHeight:() => void) => {
@@ -163,6 +167,13 @@ const LandingPage = () => {
       ...state,
       updateHeight
     })
+  }
+  const onScroll = () => {
+    const body = document.querySelector('body')
+    if(window.innerHeight + window.scrollY >= body.offsetHeight - 300) {
+      state.updateHeight?.()
+      window.removeEventListener('scroll', onScroll)
+    }
   }
   const changeOption = (option:LandingPageState['option']) => {
     setState({
@@ -261,10 +272,10 @@ const LandingPage = () => {
         index={['ai', 'kiana', 'mei', 'bronya'].indexOf(option)}
         onChangeIndex={switchView}
       >
-        <AiChanPage updateHeight={updateHeight}/>
-        <KianaPage updateHeight={updateHeight}/>
-        <MeiPage updateHeight={updateHeight}/>
-        <BronyaPage updateHeight={updateHeight}/>
+        <AiChanPage/>
+        <KianaPage/>
+        <MeiPage/>
+        <BronyaPage/>
       </SwipeableViews>
       <div className={classes.footer}>
         <Grid container justify='space-between' alignItems='center' classes={{container:classes.pageContainer}}>

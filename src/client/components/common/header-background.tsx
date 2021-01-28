@@ -6,7 +6,7 @@ import {TransitionGroup, Transition} from 'react-transition-group'
 import {TransitionStatus} from 'react-transition-group/Transition'
 
 const duration = 1500
-const BackgroundRipple = (props:BackgroundRippleProps) => {
+const BackgroundRipple:React.FunctionComponent<BackgroundRippleProps> = (props) => {
   const {animate, appear, key, size, color} = props
   const defaultStyle:React.CSSProperties = {
     position: 'absolute',
@@ -48,7 +48,7 @@ const BackgroundRipple = (props:BackgroundRippleProps) => {
     <div key={key} style={defaultStyle}/>
   )
 }
-interface BackgroundRippleProps {
+type BackgroundRippleProps = {
   key: number
   appear: boolean
   size: string
@@ -68,7 +68,7 @@ const useBackgroundStyles = makeStyles((theme:Theme) => ({
   }
 }))
 let container:HTMLDivElement
-const HeaderBackground = (props:HeaderBackgroundProps) => {
+const HeaderBackground:React.FunctionComponent<HeaderBackgroundProps> = (props) => {
   const {from, to} = props.color
   const [state, setState] = React.useState<HeaderBackgroundState>({
     key: 0,
@@ -121,13 +121,13 @@ const HeaderBackground = (props:HeaderBackgroundProps) => {
     </TransitionGroup>
   )
 }
-interface HeaderBackgroundProps {
+type HeaderBackgroundProps = {
   color: {
     from: string
     to: string
   }
 }
-interface HeaderBackgroundState {
+type HeaderBackgroundState = {
   key: number
   ripples: {
     key: number

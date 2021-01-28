@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
-const Favicon = () => {
+const Favicon:React.FunctionComponent = () => {
   return ReactDOM.createPortal([
     <link key='apple-touch-icon' rel='apple-touch-icon' sizes='120x120' href='/apple-touch-icon.png'/>,
     <link key='icon-32x32' rel='icon' type='image/png' sizes='32x32' href='/favicon-32x32.png'/>,

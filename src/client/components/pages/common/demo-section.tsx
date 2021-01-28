@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme:Theme) => ({
     maxWidth: '400px'
   }
 }))
-const DemoSection = (props:DemoSectionProps) => {
+const DemoSection:React.FunctionComponent<DemoSectionProps> = (props) => {
   const classes = useStyles({})
   const {demos, color} = props
   return (
@@ -65,7 +65,7 @@ const DemoSection = (props:DemoSectionProps) => {
     </div>
   )
 }
-interface DemoSectionProps {
+type DemoSectionProps = {
   demos: {
     headline: string
     command?: string

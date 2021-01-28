@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme:Theme) => ({
     }
   }
 }))
-const HeaderBlocks = (props:HeaderBlocksProps) => {
+const HeaderBlocks:React.FunctionComponent<HeaderBlocksProps> = (props) => {
   const [{type:screenType}] = useScreenState()
 
   const getPosition = () => {
@@ -94,7 +94,7 @@ const HeaderBlocks = (props:HeaderBlocksProps) => {
     </div>
   )
 }
-interface HeaderBlocksProps {
+type HeaderBlocksProps = {
   selected: string
   characters: {
     key: string

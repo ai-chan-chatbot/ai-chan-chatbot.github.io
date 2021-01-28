@@ -62,9 +62,8 @@ const useStyles = makeStyles((theme:Theme) => ({
     margin: '16px'
   }
 }))
-const KianaPage = (props:KianaPageProps) => {
+const KianaPage:React.FunctionComponent<KianaPageProps> = () => {
   const classes = useStyles({})
-  const {updateHeight} = props
   return (
     <div className={classes.container}>
       <Grid container direction='column' alignItems='center' classes={{container:classes.pageContainer}}>
@@ -111,14 +110,11 @@ const KianaPage = (props:KianaPageProps) => {
           name={'Kiana'}
           helps={generateHelps(PREFIX)}
           color={yellow[300]}
-          updateHeight={updateHeight}
         />
       </Grid>
     </div>
   )
 }
-interface KianaPageProps {
-  updateHeight?: () => void
-}
+type KianaPageProps = {}
 
 export default KianaPage

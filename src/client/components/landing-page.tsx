@@ -172,7 +172,6 @@ const LandingPage:React.FunctionComponent = () => {
     const body = document.querySelector('body')
     if(window.innerHeight + window.scrollY >= body.offsetHeight - 300) {
       state.updateHeight?.()
-      window.removeEventListener('scroll', onScroll)
     }
   }
   const changeOption = (option:LandingPageState['option']) => {

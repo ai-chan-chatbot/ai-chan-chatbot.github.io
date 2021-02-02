@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme:Theme) => ({
     }
   },
   link: {
-    color: green[800],
+    color: green[400],
     textDecoration: 'none'
   },
   dividerRow: {

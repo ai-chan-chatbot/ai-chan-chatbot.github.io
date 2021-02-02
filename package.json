@@ -5,7 +5,7 @@
   "main": "docs/index.html",
   "scripts": {
     "postinstall": "npm run compile",
-    "start": "NODE_ENV=development PREFIX=! webpack-dev-server --host 0.0.0.0 --content-base app --history-api-fallback",
+    "start": "NODE_ENV=development PREFIX=! webpack-dev-server --content-base app --history-api-fallback",
     "compile": "NODE_ENV=production PREFIX=! webpack --display-error-details",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

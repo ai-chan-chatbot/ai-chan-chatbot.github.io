@@ -2,7 +2,7 @@
   "name": "ai-chan-landing",
   "version": "0.0.1",
   "description": "Ai-Chan's homepage",
-  "main": "dist/server/index.js",
+  "main": "docs/index.html",
   "scripts": {
     "postinstall": "npm run compile",
     "start": "NODE_ENV=development PREFIX=! webpack-dev-server --host 0.0.0.0 --content-base app --history-api-fallback",

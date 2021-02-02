@@ -289,7 +289,7 @@ const LandingPage:React.FunctionComponent = () => {
     </div>
   )
 }
-interface LandingPageState {
+type LandingPageState = {
   option: 'ai' | 'kiana' | 'mei' | 'bronya'
   color: string
   updateHeight?: () => void

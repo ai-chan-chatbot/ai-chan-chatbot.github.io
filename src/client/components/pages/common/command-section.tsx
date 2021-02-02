@@ -94,7 +94,7 @@ const CommandSection:React.FunctionComponent<CommandSectionProps> = (props) => {
         updateHeightTimeout = setTimeout(update, 300)
       }
     }
-  }, [state.active])
+  }, [state.query, state.active])
 
   const expand = (key:string) => {
     if(state.active === key) {

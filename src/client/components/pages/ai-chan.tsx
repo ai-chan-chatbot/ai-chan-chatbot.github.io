@@ -54,6 +54,10 @@ const useStyles = makeStyles((theme:Theme) => ({
       backgroundColor: green[900]
     }
   },
+  link: {
+    color: green[800],
+    textDecoration: 'none'
+  },
   dividerRow: {
     display: 'flex',
     flexDirection: 'row',
@@ -74,6 +78,10 @@ const AiChanPage:React.FunctionComponent<AiChanPageProps> = (props) => {
         <Grid container justify='center' classes={{container:classes.descriptionRow}}>
           <Typography variant='body1' classes={{root:classes.text}}>
             Ai Chan is our general purpose bot designed to provide information of in game equipments to discord.
+          </Typography>
+          <Typography variant='body1' classes={{root:classes.text}}>
+            If you are a Genshin Impact traveler, check out our{' '}
+            <a className={classes.link} href='https://paimon-chatbot.github.io'>Paimon</a> too.
           </Typography>
         </Grid>
         <Grid container justify='center' classes={{container:classes.inviteButtons}}>

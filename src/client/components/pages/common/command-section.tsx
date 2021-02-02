@@ -76,6 +76,7 @@ const useStyles = makeStyles((theme:Theme) => ({
 }))
 let input:HTMLInputElement
 let updateHeightTimeout:NodeJS.Timeout | number
+let initial = true
 const CommandSection:React.FunctionComponent<CommandSectionProps> = (props) => {
   const [state, setState] = React.useState<CommandSectionState>({
     query: undefined,
@@ -90,7 +91,10 @@ const CommandSection:React.FunctionComponent<CommandSectionProps> = (props) => {
         updateHeightTimeout = undefined
         updateHeight()
       }
-      if(!updateHeightTimeout) {
+      if(initial) {
+        initial = false
+        updateHeightTimeout = setTimeout(update, 3000)
+      } else if(!updateHeightTimeout) {
         updateHeightTimeout = setTimeout(update, 300)
       }
     }

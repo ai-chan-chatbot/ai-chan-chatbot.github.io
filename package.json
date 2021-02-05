@@ -4,11 +4,13 @@
   "description": "Ai-Chan's homepage",
   "main": "docs/index.html",
   "scripts": {
-    "postinstall": "npm run compile",
     "start": "NODE_ENV=development PREFIX=! webpack-dev-server --content-base app --history-api-fallback",
     "compile": "NODE_ENV=production PREFIX=! webpack --display-error-details",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "pre-commit": [
+    "compile"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -29,6 +31,7 @@
     "copy-webpack-plugin": "^6.0.1",
     "file-loader": "6.0.0",
     "html-webpack-plugin": "^4.3.0",
+    "pre-commit": "^1.2.2",
     "ts-loader": "^7.0.5",
     "ts-node": "^8.10.2",
     "webpack": "^4.43.0",

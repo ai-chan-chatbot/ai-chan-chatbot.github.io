@@ -14,7 +14,6 @@ import MeiCharacter from '../../asset/img/character/mei.png'
 import MeiAvatar from '../../asset/img/avatar/mei.png'
 import BronyaCharacter from '../../asset/img/character/bronya.png'
 import BronyaAvatar from '../../asset/img/avatar/bronya.png'
-import {useScreenState} from '../store/screen'
 import AiChanPage from './pages/ai-chan'
 import KianaPage from './pages/kiana'
 import MeiPage from './pages/mei'
@@ -147,7 +146,6 @@ const useStyles = makeStyles((theme:Theme) => ({
   }
 }))
 const LandingPage:React.FunctionComponent = () => {
-  const [{type:screenType}] = useScreenState()
   const [state, setState] = React.useState<LandingPageState>({
     option: 'ai',
     color: 'black',

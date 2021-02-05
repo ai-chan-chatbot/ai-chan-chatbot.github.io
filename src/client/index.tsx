@@ -1,11 +1,10 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import {Provider} from 'react-redux'
 import {ThemeProvider} from '@material-ui/styles'
 import {Theme, createMuiTheme} from '@material-ui/core/styles'
 import {lightGreen, green, grey} from '@material-ui/core/colors'
 
-import store from './store'
+import CombinedProvider from './store'
 import Favicon from './components/favicon'
 import LandingPage from './components/landing-page'
 
@@ -31,10 +30,10 @@ const theme:Theme = createMuiTheme({
 })
 
 ReactDOM.render(
-  <Provider store={store}>
+  <CombinedProvider>
     <ThemeProvider theme={theme}>
       <Favicon/>
       <LandingPage/>
     </ThemeProvider>
-  </Provider>
+  </CombinedProvider>
 , document.getElementById('root'))

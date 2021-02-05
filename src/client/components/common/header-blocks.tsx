@@ -3,9 +3,9 @@ import {makeStyles} from '@material-ui/styles'
 import {Theme} from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 
-import {useScreenState} from '../../store/screen'
 import HonkaiImpact from '../../../asset/img/honkai-impact.png'
 import Discord from '../../../asset/img/discord.png'
+import useScreenContext from '../../store/screen'
 
 const useStyles = makeStyles((theme:Theme) => ({
   headerContainer: {
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme:Theme) => ({
   }
 }))
 const HeaderBlocks:React.FunctionComponent<HeaderBlocksProps> = (props) => {
-  const [{type:screenType}] = useScreenState()
+  const [{type:screenType}] = useScreenContext()
 
   const getPosition = () => {
     const {selected, characters} = props

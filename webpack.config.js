@@ -27,14 +27,7 @@ module.exports = {
       }]
     }, {
       test: /\.(jpe?g|png|gif|svg|mov|ttf|eot|woff2?)$/,
-      use: [{
-        loader: 'file-loader',
-        options: {
-          hash: 'sha512',
-          digest: 'hex',
-          name: '[hash].[ext]'
-        }
-      }]
+      type: 'asset/resource'
     }]
   },
   plugins: [

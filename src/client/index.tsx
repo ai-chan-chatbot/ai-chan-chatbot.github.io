@@ -4,9 +4,9 @@ import {ThemeProvider} from '@material-ui/styles'
 import {Theme, createMuiTheme} from '@material-ui/core/styles'
 import {lightGreen, green, grey} from '@material-ui/core/colors'
 
-import CombinedProvider from './store'
+import CombinedContextProvider from './store'
 import Favicon from './components/favicon'
-import LandingPage from './components/landing-page'
+import Router from './components'
 
 const theme:Theme = createMuiTheme({
   palette: {
@@ -30,10 +30,10 @@ const theme:Theme = createMuiTheme({
 })
 
 ReactDOM.render(
-  <CombinedProvider>
+  <CombinedContextProvider>
     <ThemeProvider theme={theme}>
       <Favicon/>
-      <LandingPage/>
+      <Router/>
     </ThemeProvider>
-  </CombinedProvider>
+  </CombinedContextProvider>
 , document.getElementById('root'))

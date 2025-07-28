@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme:Theme) => ({
   },
   commandSection: {
     width: '100%',
-    padding: '32px 0 64px'
+    padding: '32px 0'
   },
   commandCategory: {
     margin: '16px 0'
@@ -75,8 +75,6 @@ const useStyles = makeStyles((theme:Theme) => ({
   }
 }))
 let input:HTMLInputElement
-let updateHeightTimeout:NodeJS.Timeout | number
-let initial = true
 const CommandSection:React.FunctionComponent<CommandSectionProps> = (props) => {
   const [state, setState] = React.useState<CommandSectionState>({
     query: undefined,
@@ -84,19 +82,10 @@ const CommandSection:React.FunctionComponent<CommandSectionProps> = (props) => {
     active: undefined
   })
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     const {updateHeight} = props
     if(updateHeight) {
-      const update = () => {
-        updateHeightTimeout = undefined
-        updateHeight()
-      }
-      if(initial) {
-        initial = false
-        updateHeightTimeout = setTimeout(update, 3000)
-      } else if(!updateHeightTimeout) {
-        updateHeightTimeout = setTimeout(update, 300)
-      }
+      setTimeout(updateHeight, 300)
     }
   }, [state.query, state.active])
 

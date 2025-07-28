@@ -6,21 +6,21 @@ import {grey, green, yellow, purple, orange} from '@material-ui/core/colors'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
-import AiChanCharacter from '../../asset/img/character/ai-chan.png'
-import AiChanAvatar from '../../asset/img/avatar/ai-chan.png'
-import KianaCharacter from '../../asset/img/character/kiana.png'
-import KianaAvatar from '../../asset/img/avatar/kiana.png'
-import MeiCharacter from '../../asset/img/character/mei.png'
-import MeiAvatar from '../../asset/img/avatar/mei.png'
-import BronyaCharacter from '../../asset/img/character/bronya.png'
-import BronyaAvatar from '../../asset/img/avatar/bronya.png'
-import AiChanPage from './pages/ai-chan'
-import KianaPage from './pages/kiana'
-import MeiPage from './pages/mei'
-import BronyaPage from './pages/bronya'
-import HeaderBlocks from './common/header-blocks'
-import HeaderBackground from './common/header-background'
-import AvatarButtons from './common/avatar-buttons'
+import AiChanCharacter from '../../../asset/img/character/ai-chan.png'
+import AiChanAvatar from '../../../asset/img/avatar/ai-chan.png'
+import KianaCharacter from '../../../asset/img/character/kiana.png'
+import KianaAvatar from '../../../asset/img/avatar/kiana.png'
+import MeiCharacter from '../../../asset/img/character/mei.png'
+import MeiAvatar from '../../../asset/img/avatar/mei.png'
+import BronyaCharacter from '../../../asset/img/character/bronya.png'
+import BronyaAvatar from '../../../asset/img/avatar/bronya.png'
+import HeaderBlocks from '../common/header-blocks'
+import HeaderBackground from '../common/header-background'
+import AvatarButtons from '../common/avatar-buttons'
+import AiChanPage from './ai-chan'
+import KianaPage from './kiana'
+import MeiPage from './mei'
+import BronyaPage from './bronya'
 
 const useStyles = makeStyles((theme:Theme) => ({
   '@import': [
@@ -280,7 +280,7 @@ const LandingPage:React.FunctionComponent = () => {
             Developed by: Ching Yaw Hao, RaikireHiuduo, Lucatiel, Lil'Cookie
           </Typography>
           <Typography variant='caption' classes={{root:classes.footerText}} style={{color:getForegroundColor()}}>
-            <a className={classes.link} href='https://discord.gg/cWbWNuy'>Try It</a> | <a className={classes.link} href='https://www.patreon.com/user?u=10662508'>Support Us</a> 
+            <a className={classes.link} href='/terms-of-use'>Terms of Use</a>
           </Typography>
         </Grid>
       </div>

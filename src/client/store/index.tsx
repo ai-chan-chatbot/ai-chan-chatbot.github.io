@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {Provider as ScreenProvider} from './screen'
 
-const CombinedProvider:React.FunctionComponent = props => {
+const CombinedContextProvider:React.FunctionComponent = props => {
   return [
     ScreenProvider
   ].reduce<JSX.Element>((combined, Provider) =>
@@ -13,4 +13,4 @@ const CombinedProvider:React.FunctionComponent = props => {
     </>
   )
 }
-export default CombinedProvider
+export default CombinedContextProvider
